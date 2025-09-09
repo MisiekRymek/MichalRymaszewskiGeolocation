@@ -3,6 +3,7 @@ using MichalRymaszewskiGeolocation.Presenters;
 //using MichalRymaszewskiGeolocation.Repositories;
 using MichalRymaszewskiGeolocation.Services;
 using MichalRymaszewskiGeolocation.Views;
+using MichalRymaszewskiGeolocation.Utils;
 
 namespace MichalRymaszewskiGeolocation
 {
@@ -10,7 +11,7 @@ namespace MichalRymaszewskiGeolocation
     {
         private GeoPresenter _presenter;
         IDatabaseService dbService = new MySqlDatabaseService("localhost", "geodb", "root", "");
-        IGeoService geoService = new IpStackGeoService("328cb5d926addf33d32aa8d6847ac352");
+        IGeoService geoService = new IpStackGeoService(Config.IPstackApiKey);
 
         string IGeoServiceInput.IPaddress { get => this.txtb_sumbitIP.Text; set => this.txtb_sumbitIP.Text = value; }
         string IGeoServiceInput.ErrorMessage { get => this.ErrorMessage.Text; set => this.ErrorMessage.Text = value; }
@@ -26,9 +27,10 @@ namespace MichalRymaszewskiGeolocation
         public Form1()
         {
             InitializeComponent();
+            this.Text = "IP/URL Geolocation";
+            ErrorMessage.Text = "";
             this._presenter = new GeoPresenter(this, dbService, geoService);
 
-            ErrorMessage.Text = "";
 
             lv_geo_result.View = View.Details;
             lv_geo_result.FullRowSelect = true;

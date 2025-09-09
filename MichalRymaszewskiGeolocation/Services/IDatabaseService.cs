@@ -9,6 +9,7 @@ namespace MichalRymaszewskiGeolocation.Services
         bool Delete(string ipOrUrl);
         //IEnumerable<GeoLocation> GetAll();
         GeoLocation? Find(string ipOrUrl);
+        bool CheckDbStatus();
     }
 }
 

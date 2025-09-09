@@ -59,7 +59,7 @@
             // 
             ErrorMessage.AutoSize = true;
             ErrorMessage.ForeColor = Color.Red;
-            ErrorMessage.Location = new Point(284, 157);
+            ErrorMessage.Location = new Point(271, 158);
             ErrorMessage.Name = "ErrorMessage";
             ErrorMessage.Size = new Size(78, 15);
             ErrorMessage.TabIndex = 2;

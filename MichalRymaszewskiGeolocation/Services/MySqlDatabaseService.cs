@@ -150,5 +150,21 @@ namespace MichalRymaszewskiGeolocation.Services
 
             return null;
         }
+
+        public bool CheckDbStatus()
+        {
+            using var conn = new MySqlConnection(_connectionString);
+            try
+            {
+                conn.Open();
+                Debug.WriteLine($"Database OK");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Database error: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

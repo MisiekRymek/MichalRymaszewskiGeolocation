@@ -25,6 +25,14 @@ namespace MichalRymaszewskiGeolocation.Presenters
             _view.SaveAttempted += OnSaveAttempted;
             _view.RemoveAttempted += OnRemoveAttempted;
             _view.ReloadAttempted += OnReloadAttempted;
+            _view.ToggleRemoveButton(false);
+            _view.ToggleSaveButton(false);
+
+            if (!_dbService.CheckDbStatus())
+            {
+                _view.ShowError = true;
+                _view.ErrorMessage = "Database not avaliable";
+            }
         }
         private async void OnSubmitAttempted(object? sender, EventArgs e)
         {
@@ -40,6 +48,11 @@ namespace MichalRymaszewskiGeolocation.Presenters
                 _view.ToggleSaveButton(false);
                 _view.ToggleRemoveButton(true);
             }
+            else
+            {
+                _view.ShowError = true;
+                _view.ErrorMessage = "problem saving to database";
+            }
         }
 
         private async void OnRemoveAttempted(object? sender, EventArgs e)
@@ -50,6 +63,11 @@ namespace MichalRymaszewskiGeolocation.Presenters
                 Debug.WriteLine("REMOVE finished");
                 _view.ToggleSaveButton(true);
                 _view.ToggleRemoveButton(false);
+            }
+            else
+            {
+                _view.ShowError = true;
+                _view.ErrorMessage = "problem removing from database";
             }
         }
 
@@ -62,7 +80,7 @@ namespace MichalRymaszewskiGeolocation.Presenters
 
         private async Task HandleGeoSubmissionAsync(string ipAddress, bool useDatabase)
         {
-            string ip_regex = @"(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}";
+            string ip_regex = @"^(\b25[0-5]|\b2[0-4][0-9]|\b[01]?[0-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$";
             string url_regex_www = @"^www\.([a-zA-Z0-9-]+)(\.[a-zA-Z]{2,3})+$";
             string url_regex = @"^([a-zA-Z0-9-]+)(\.[a-zA-Z]{2,3})+$";
             Uri uri;
@@ -75,10 +93,18 @@ namespace MichalRymaszewskiGeolocation.Presenters
             }
             else if ((Regex.IsMatch(ipAddress, ip_regex)) || (Regex.IsMatch(ipAddress, url_regex_www)) || (Regex.IsMatch(ipAddress, url_regex)))
             {
+                if(Regex.IsMatch(ipAddress, ip_regex))
+                    Debug.WriteLine($"ip regex");
+                else if(Regex.IsMatch(ipAddress, url_regex_www))
+                    Debug.WriteLine($"url www regex");
+                else if(Regex.IsMatch(ipAddress, url_regex))
+                    Debug.WriteLine($"url regex");
+
                 correct_ip_url = true;
             }
             else if (Uri.TryCreate(ipAddress, UriKind.Absolute, out uri) && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
             {
+                Debug.WriteLine($"URI");
                 if (Uri.TryCreate(ipAddress, UriKind.Absolute, out var uri_host))
                 {
                     ipAddress = uri_host.Host;
@@ -90,15 +116,9 @@ namespace MichalRymaszewskiGeolocation.Presenters
             if (!correct_ip_url)
             {
                 _view.ShowError = true;
-                _view.ErrorMessage = "Incorrect IP or URL format";
+                _view.ErrorMessage = "Incorrect IP or URL format.";
                 return;
             }
-            //else
-            //{
-            //    _view.ShowError = true;
-            //    _view.ErrorMessage = "Incorrect IP or URL format";
-            //    return;
-            //}
 
             Debug.WriteLine($"IP Address submitted: {ipAddress}");
 
@@ -138,7 +158,8 @@ namespace MichalRymaszewskiGeolocation.Presenters
             else
             {
                 _view.ShowError = true;
-                _view.ErrorMessage = "problem connecting to IPStack";
+                //_view.ErrorMessage = "problem connecting to IPStack";
+                _view.ErrorMessage = ipstack_result.ErrorMessage;
                 Debug.WriteLine("PROBLEM");
             }
         }
