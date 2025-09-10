@@ -1,4 +1,4 @@
-<h1>Michał Rymaszewski job application task</h1>
+<h1>Michał Rymaszewski Desktop WinForms Assignment 2.0 - C#</h1>
 <img width="660" height="210" alt="image" src="https://github.com/user-attachments/assets/325e7fca-dc3e-4f8f-84a8-6c241874b4d0" />
 
 <h2>🌍 IP/URL Geolocation Finder</h2>
