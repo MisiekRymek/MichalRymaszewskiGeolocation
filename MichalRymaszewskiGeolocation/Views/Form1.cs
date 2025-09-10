@@ -10,7 +10,7 @@ namespace MichalRymaszewskiGeolocation
     public partial class Form1 : Form, IGeoServiceInput
     {
         private GeoPresenter _presenter;
-        IDatabaseService dbService = new MySqlDatabaseService("localhost", "geodb", "root", "");
+        IDatabaseService dbService = new MySqlDatabaseService(Config.dbAddress, Config.dbName, Config.dbUser, Config.dbPassword);
         IGeoService geoService = new IpStackGeoService(Config.IPstackApiKey);
 
         string IGeoServiceInput.IPaddress { get => this.txtb_sumbitIP.Text; set => this.txtb_sumbitIP.Text = value; }
@@ -28,6 +28,9 @@ namespace MichalRymaszewskiGeolocation
         {
             InitializeComponent();
             this.Text = "IP/URL Geolocation";
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            lv_geo_result.Enabled = false;
             ErrorMessage.Text = "";
             this._presenter = new GeoPresenter(this, dbService, geoService);
 
@@ -72,6 +75,24 @@ namespace MichalRymaszewskiGeolocation
             item.SubItems.Add(location.RetrievedAt.ToString("yyyy-MM-dd HH:mm:ss"));
 
             lv_geo_result.Items.Add(item);
+        }
+
+        public GeoLocation? GetListGeoLocation()
+        {
+            if (lv_geo_result.Items.Count == 0)
+                return null;
+
+            var item = lv_geo_result.Items[0];
+
+            return new GeoLocation
+            {
+                IpOrUrl = item.SubItems[0].Text,
+                Country = item.SubItems[1].Text,
+                City = item.SubItems[2].Text,
+                Latitude = double.TryParse(item.SubItems[3].Text, out var lat) ? lat : 0,
+                Longitude = double.TryParse(item.SubItems[4].Text, out var lon) ? lon : 0,
+                RetrievedAt = DateTime.TryParse(item.SubItems[5].Text, out var date) ? date : DateTime.MinValue
+            };
         }
 
         public void ToggleRemoveButton(bool enable)

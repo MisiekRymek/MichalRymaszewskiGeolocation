@@ -16,5 +16,6 @@ namespace MichalRymaszewskiGeolocation.Views
         public void ShowGeoLocation(GeoLocation location);
         public void ToggleRemoveButton(bool enable);
         public void ToggleSaveButton(bool enable);
+        public GeoLocation? GetListGeoLocation();
     }
 }

@@ -88,30 +88,6 @@ namespace MichalRymaszewskiGeolocation.Services
             }
         }
 
-        //public IEnumerable<GeoLocation> GetAll()
-        //{
-        //    var list = new List<GeoLocation>();
-        //    using var conn = new MySqlConnection(_connectionString);
-        //    conn.Open();
-        //    var cmd = conn.CreateCommand();
-        //    cmd.CommandText = "SELECT Id, IpOrUrl, Country, City, Latitude, Longitude, RetrievedAt FROM GeoLocations";
-        //    using var reader = cmd.ExecuteReader();
-        //    while (reader.Read())
-        //    {
-        //        list.Add(new GeoLocation
-        //        {
-        //            Id = reader.GetInt32("Id"),
-        //            IpOrUrl = reader.GetString("IpOrUrl"),
-        //            Country = reader.GetString("Country"),
-        //            City = reader.GetString("City"),
-        //            Latitude = reader.GetDouble("Latitude"),
-        //            Longitude = reader.GetDouble("Longitude"),
-        //            RetrievedAt = reader.GetDateTime("RetrievedAt")
-        //        });
-        //    }
-        //    return list;
-        //}
-
         public GeoLocation? Find(string ipOrUrl)
         {
             using var conn = new MySqlConnection(_connectionString);

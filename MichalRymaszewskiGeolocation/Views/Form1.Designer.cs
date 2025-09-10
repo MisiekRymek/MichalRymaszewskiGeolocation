@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             txtb_sumbitIP = new TextBox();
             btn_submitIP = new Button();
             ErrorMessage = new Label();
@@ -59,7 +60,7 @@
             // 
             ErrorMessage.AutoSize = true;
             ErrorMessage.ForeColor = Color.Red;
-            ErrorMessage.Location = new Point(271, 158);
+            ErrorMessage.Location = new Point(286, 157);
             ErrorMessage.Name = "ErrorMessage";
             ErrorMessage.Size = new Size(78, 15);
             ErrorMessage.TabIndex = 2;
@@ -86,7 +87,7 @@
             // 
             // btn_removeDB
             // 
-            btn_removeDB.Location = new Point(271, 132);
+            btn_removeDB.Location = new Point(286, 128);
             btn_removeDB.Name = "btn_removeDB";
             btn_removeDB.Size = new Size(103, 23);
             btn_removeDB.TabIndex = 5;
@@ -127,6 +128,7 @@
             Controls.Add(ErrorMessage);
             Controls.Add(btn_submitIP);
             Controls.Add(txtb_sumbitIP);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);

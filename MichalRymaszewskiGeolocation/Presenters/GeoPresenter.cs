@@ -1,5 +1,4 @@
-﻿//using MichalRymaszewskiGeolocation.Repositories;
-using MichalRymaszewskiGeolocation.Models;
+﻿using MichalRymaszewskiGeolocation.Models;
 using MichalRymaszewskiGeolocation.Services;
 using MichalRymaszewskiGeolocation.Views;
 using System;
@@ -58,7 +57,8 @@ namespace MichalRymaszewskiGeolocation.Presenters
         private async void OnRemoveAttempted(object? sender, EventArgs e)
         {
             Debug.WriteLine("REMOVE");
-            if (_dbService.Delete(_view.IPaddress))
+            Debug.WriteLine(_view.IPaddress);
+            if (_dbService.Delete(_view.GetListGeoLocation().IpOrUrl))
             {
                 Debug.WriteLine("REMOVE finished");
                 _view.ToggleSaveButton(true);
@@ -158,9 +158,8 @@ namespace MichalRymaszewskiGeolocation.Presenters
             else
             {
                 _view.ShowError = true;
-                //_view.ErrorMessage = "problem connecting to IPStack";
-                _view.ErrorMessage = ipstack_result.ErrorMessage;
-                Debug.WriteLine("PROBLEM");
+                _view.ErrorMessage = "Problem getting geolocation from IPStack";
+                return;
             }
         }
     }
